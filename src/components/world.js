@@ -1,9 +1,8 @@
 import { clearCanvas } from "../drawer";
+import { vector } from "../geometry";
 
 const intersects = (a, b) => {
-    const pa = a.position, pb = b.position;
-    const range = Math.hypot(Math.abs(pa.x - pb.x), Math.abs(pa.y - pb.y));
-    return range <= a.size + b.size;
+    return vector(a.position).sub(b.position).length() <= a.size + b.size;
 };
 
 export const world = {
@@ -28,18 +27,21 @@ export const world = {
         this.players.forEach(player => {
             this.bullets.forEach(bullet => {
                 if (intersects(player, bullet) && bullet.owner.type !== player.type) {
-                    player.health -= bullet.damage;
+                    if (player.getDamage(bullet.damage)) {
+                        bullet.owner.score++;
+                    }
                     bullet.disabled = true;
                 }
             });
-            if (player.health <= 0) {
-                if (player.hearts > 1) {
-                    player.hearts--;
-                    player.health = player.fullHealth;
-                } else {
-                    player.disabled = true;
+
+            this.players.forEach(p => {
+                if (intersects(player, p) && p.type !== player.type) {
+                    p.hit(player);
                 }
-            }
+            });
         });
-    }
+    },
+    isLevelFinished: function () {
+        return this.players.every((el) => el.type === 'player');
+    },
 }

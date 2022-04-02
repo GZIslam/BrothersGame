@@ -5,5 +5,6 @@ export const gameSize = {
 
 export const colors = {
     player: 'green',
-    enemy: 'red'
+    enemy: 'red',
+    shootingEnemy: 'purple'
 }

@@ -23,6 +23,19 @@ export const drawArc = ({ color, width, position, size, value }) => {
     ctx.stroke();
 };
 
+export const drawRect = ({ color, width, height, position }) => {
+    ctx.beginPath();
+    ctx.fillStyle = color;
+    ctx.rect(position.x, position.y, width, height);
+    ctx.fill();
+};
+
+export const drawText = ({ text, position, size, color }) => {
+    ctx.fillStyle = color;
+    ctx.font = `${size}px serif`;
+    ctx.fillText(text, position.x, position.y);
+};
+
 export const clearCanvas = () => {
     ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
 };
