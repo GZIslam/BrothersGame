@@ -1,4 +1,7 @@
 export const controller = (player) => {
+    let isMouseDown = false;
+    let shooting;
+    let coords = {};
     window.document.addEventListener("keydown", (e) => {
         switch (e.code) {
             case "KeyA":
@@ -36,6 +39,19 @@ export const controller = (player) => {
         }
     });
     window.document.addEventListener('mousedown', (e) => {
-        player.shoot({ x: e.clientX, y: e.clientY });
-    })
+        coords.x = e.clientX;
+        coords.y = e.clientY;
+        isMouseDown = true;
+        shooting = setInterval(() => player.shoot(coords));
+    });
+    window.document.addEventListener("mousemove", (e) => {
+        if(isMouseDown) {
+            coords.x = e.clientX;
+            coords.y = e.clientY;
+        }
+    });
+    window.document.addEventListener("mouseup", (e) => {
+        isMouseDown = false;
+        if (shooting) clearInterval(shooting);
+    });
 }

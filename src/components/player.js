@@ -21,7 +21,6 @@ const createPerson = ({ color, health, canShoot, size, hearts, speed, damage,
     const cooldownReady = () => {
         if (cooldownEnds === null || +(new Date()) > cooldownEnds) {
             cooldownEnds = +(new Date()) + cooldown * 1000;
-            console.log('cooldownEnds', cooldownEnds)
             return true;
         }
         return false;
@@ -37,8 +36,8 @@ const createPerson = ({ color, health, canShoot, size, hearts, speed, damage,
         animate: function () {
             if (logic)
                 logic(this, world);
-            position.x += this.speed.x;
-            position.y += this.speed.y;
+            position.x = (position.x + this.speed.x > gameSize.w - player.size) || (position.x + this.speed.x < 0 + player.size / 2) ? position.x : position.x + this.speed.x;
+            position.y = (position.y + this.speed.y > gameSize.h - player.size) || (position.y + this.speed.y < 0 + player.size / 2) ? position.y : position.y + this.speed.y;
         },
         shoot: function (destination) {
             if (cooldownReady()) {
