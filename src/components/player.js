@@ -5,6 +5,10 @@ import { vector } from "../geometry";
 import { createBullet } from "./bullet";
 import { world } from "./world";
 
+import shootingPlayerAudioFile from "../assets/sounds/sfx_wpn_laser8.wav";
+import shootingEnemyAudioFile from "../assets/sounds/sfx_wpn_laser7.wav";
+import hitAudioFile from "../assets/sounds/sfx_wpn_punch4.wav";
+
 const createUUID = () => {
     let d = new Date().getTime();
     return 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
@@ -42,6 +46,9 @@ const createPerson = ({ color, health, canShoot, size, hearts, speed, damage,
         shoot: function (destination) {
             if (cooldownReady()) {
                 // sound
+                const shootingAudio = type === "player" ? new Audio(shootingPlayerAudioFile) : new Audio(shootingEnemyAudioFile);
+                shootingAudio.play();
+
                 const bSpeed = vector(destination).sub(position).setLength(bulletSpeed);
                 world.bullets.push(createBullet({
                     color, damage, size: 3, speed: bSpeed, owner: this,
@@ -52,6 +59,9 @@ const createPerson = ({ color, health, canShoot, size, hearts, speed, damage,
         hit: function (p) {
             if (!canShoot && cooldownReady()) {
                 // sound
+                const hitAudio = new Audio(hitAudioFile);
+                hitAudio.play();
+                
                 return p.getDamage(damage);
             }
             return false;
