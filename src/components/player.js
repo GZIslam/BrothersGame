@@ -46,8 +46,7 @@ const createPerson = ({ color, health, canShoot, size, hearts, speed, damage,
         shoot: function (destination) {
             if (cooldownReady()) {
                 // sound
-                const shootingAudio = type === "player" ? new Audio(shootingPlayerAudioFile) : new Audio(shootingEnemyAudioFile);
-                shootingAudio.play();
+                (type === "player" ? new Audio(shootingPlayerAudioFile) : new Audio(shootingEnemyAudioFile)).play();
 
                 const bSpeed = vector(destination).sub(position).setLength(bulletSpeed);
                 world.bullets.push(createBullet({
@@ -59,9 +58,8 @@ const createPerson = ({ color, health, canShoot, size, hearts, speed, damage,
         hit: function (p) {
             if (!canShoot && cooldownReady()) {
                 // sound
-                const hitAudio = new Audio(hitAudioFile);
-                hitAudio.play();
-                
+                (new Audio(hitAudioFile)).play();
+
                 return p.getDamage(damage);
             }
             return false;
